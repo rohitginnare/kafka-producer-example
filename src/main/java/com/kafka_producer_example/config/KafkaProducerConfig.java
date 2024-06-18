@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Bean
-    public NewTopic createTopic() {
-        return new NewTopic("javatechie-demo3", 3, (short) 1);
+	@Bean
+	public NewTopic createTopic() {
+		return new NewTopic("javatechie-customer", 3, (short) 1);
 
-    }
+	}
 }
