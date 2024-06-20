@@ -41,10 +41,41 @@ public class EventController {
 			for (int i = 0; i < 2000; i++) {
 				kafkaMessagePublisher.sendEventsToTopic(customer);
 			}
+			System.out.println("Message " + customer.toString() + "Published Succesfully...!");
 			return ResponseEntity.ok("Message " + customer.toString() + "Published Succesfully...!");
 
 		} catch (Exception e) {
 			return ResponseEntity.internalServerError().build();
+		}
+	}
+
+	@GetMapping("/publishOnSinglePartition/{message}")
+	public ResponseEntity<?> getMessage(@PathVariable String message) {
+		try {
+			for (int i = 1; i <= 100; i++) {
+				kafkaMessagePublisher.publishMessageOnSinglePartition(message);
+			}
+
+			System.out.println("Message Published on Single topic successfully. Message : " + message);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Unable to send message to the topic.");
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/publishMessageforRetry/{message}")
+	public ResponseEntity<?> getMessagesForRetry(@PathVariable String message) {
+		try {
+			for (int i = 1; i <= 88; i++) {
+				kafkaMessagePublisher.publishMessageforRetry(message);
+			}
+			
+			System.out.println("Message Published on Single topic successfully. Message : " + message);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Unable to send message to the topic.");
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
